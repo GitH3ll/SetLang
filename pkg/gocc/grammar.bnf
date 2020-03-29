@@ -1,0 +1,155 @@
+/* Lexical Parser */
+!whitespace : '\t' | '\n' | '\r' | ' ' ;
+!lineComment  : '/' '/' { . } '\n' ;
+!blockComment : '/' '*' { . | '*' } '*' '/' ;
+
+_letter : 'A'-'Z' | 'a'-'z' | '_' ;
+_digit : '0'-'9' ;
+_alpha : _letter | _digit ;
+
+string_literal : '"' {_alpha | ' ' | '!' | '?' }'"' ;
+
+/* keywords */
+func : 'f' 'u' 'n' 'c' ;
+ent : 'e' 'n' 't' ;
+iter : 'i' 't' 'e' 'r';
+by : 'b' 'y';
+if : 'i' 'f' ;
+else : 'e' 'l' 's' 'e' ;
+return : 'r' 'e' 't' 'u' 'r' 'n' ;
+true : 't' 'r' 'u' 'e' ;
+false : 'f' 'a' 'l' 's' 'e' ;
+and : 'a' 'n' 'd' ;
+or : 'o' 'r' ;
+
+ident : _letter {_alpha} ;
+
+/* punctuation */
+plus : '+' ;
+minus : '-' ;
+mul : '*' ;
+div : '/' ;
+
+eq : '=' '=' ;
+neq : '!' '=' ;
+lte : '<' '=' ;
+lt : '<' ;
+gte : '>' '=' ;
+gt : '>' ;
+
+lfigure : '{' ;
+rfigure : '}' ;
+assign : '=' ;
+lparen : '(' ;
+rparen : ')' ;
+comma : ',' ;
+semicolon : ';' ;
+rquad : ']' ;
+lquad : '[' ;
+
+/* Syntactic Parser */
+
+<<
+import (
+	"github.com/GitH3ll/SetLang/pkg/ast"
+)
+>>
+
+Program
+  : Functions Statements  << ast.NewProgram($0, $1) >>
+  ;
+
+Functions
+  : Functions Function << ast.AppendStatement($0, $1) >>
+  | empty     << ast.NewStatementList() >>
+  ;
+
+Function
+  : func ident lparen FormalArgs rparen ident StatementBlock << ast.NewFunctionStatement($1, $3, $5, $6) >>
+  ;
+
+ Statements
+  : Statements Statement << ast.AppendStatement($0, $1) >>
+  | empty << ast.NewStatementList() >>
+  ;
+
+ StatementBlock
+  : lfigure Statements rfigure << ast.NewBlockStatement($1) >>
+  ;
+
+ Statement
+  : if Expression StatementBlock IfStatement << ast.NewIfStatement($1, $2, $3) >>
+  | iter ident by ident StatementBlock << ast.NewIterStatement($1, $3, $4) >>
+  | ident assign Expression semicolon << ast.NewAssignStatement($0, $2) >>
+  | ent ident assign Expression semicolon << ast.NewIdentInit($1, $3) >>
+  | Expression semicolon << ast.NewExpressionStatement($0) >>
+  | return Expression semicolon << ast.NewReturnStatement($1) >>
+  ;
+
+IfStatement
+	: else StatementBlock << $1, nil >>
+	| empty
+	;
+
+Expression
+  : Expression Operation Term << ast.NewInfixExpression($0, $2, $1) >>
+  | Term
+  ;
+
+ Operation
+ 	: plus
+ 	| minus
+ 	| lte
+ 	| gte
+ 	| lt
+ 	| gt
+ 	| eq
+ 	| neq
+ 	| and
+ 	| or
+ 	;
+
+Term
+  : Term mul Factor << ast.NewInfixExpression($0, $2, $1) >>
+  | Term div Factor << ast.NewInfixExpression($0, $2, $1) >>
+  | Bool			<< ast.NewBoolExpression($0) >>
+  | Set << ast.NewSetExpression($0) >>
+  | string_literal << ast.NewStringLiteral($0) >>
+  | Factor
+  ;
+
+Factor
+  : lparen Expression rparen    << $1, nil >>
+  | ident                       << ast.NewIdentExpression($0) >>
+  | ident lparen Args rparen    << ast.NewFunctionCall($0, $2) >>
+  | error
+  ;
+
+Bool
+  : true 						<< true, nil >>
+  | false 						<< false, nil >>
+  ;
+
+Set
+  : lquad Args rquad << ast.NewSet($1) >>
+  ;
+
+Args
+  : Expression ArgsList << ast.AppendArgs($0, $1) >>
+  | empty
+  ;
+
+ArgsList
+  : ArgsList comma Expression  << ast.AppendArgs($2, $0) >>
+  | empty                      << ast.NewArg() >>
+  ;
+
+FormalArgs
+  : ident ident FormalArgsList << ast.AppendFormalArgs($2, $0, $1) >>
+  | empty
+  ;
+
+FormalArgsList
+  : FormalArgsList comma ident ident  << ast.AppendFormalArgs($0, $2, $3) >>
+  | empty                             << ast.NewFormalArg() >>
+  ;
