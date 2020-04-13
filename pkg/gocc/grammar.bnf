@@ -22,9 +22,8 @@ false : 'f' 'a' 'l' 's' 'e' ;
 and : 'a' 'n' 'd' ;
 or : 'o' 'r' ;
 
-ident : _letter {_alpha} ;
+ident : _letter     {_alpha} ;
 
-/* punctuation */
 plus : '+' ;
 minus : '-' ;
 mul : '*' ;
