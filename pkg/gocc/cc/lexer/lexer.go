@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"unicode/utf8"
 
-	"SetLang/pkg/gocc/cc/token"
+	"github.com/GitH3ll/SetLang/pkg/gocc/cc/token"
 )
 
 const (

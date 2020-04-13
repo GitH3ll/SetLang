@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"strings"
 
-	parseError "SetLang/pkg/gocc/cc/errors"
-	"SetLang/pkg/gocc/cc/token"
+	parseError "github.com/GitH3ll/SetLang/pkg/gocc/cc/errors"
+	"github.com/GitH3ll/SetLang/pkg/gocc/cc/token"
 )
 
 const (

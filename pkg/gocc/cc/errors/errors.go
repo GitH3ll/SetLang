@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"strings"
 
-	"SetLang/pkg/gocc/cc/token"
+	"github.com/GitH3ll/SetLang/pkg/gocc/cc/token"
 )
 
 type ErrorSymbol interface {

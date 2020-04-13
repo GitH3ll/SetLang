@@ -5,7 +5,7 @@ package lexer
 import (
 	"fmt"
 
-	"SetLang/pkg/gocc/cc/token"
+	"github.com/GitH3ll/SetLang/pkg/gocc/cc/token"
 )
 
 type ActionTable [NumStates]ActionRow

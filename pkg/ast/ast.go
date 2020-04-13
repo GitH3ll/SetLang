@@ -3,7 +3,7 @@ package ast
 import (
 	"fmt"
 
-	"github.com/Gith3ll/SetLang/pkg/gocc/cc/token"
+	"github.com/GitH3ll/SetLang/pkg/gocc/cc/token"
 )
 
 // interface methods

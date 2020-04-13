@@ -1,6 +1,6 @@
 package ast
 
-import "github.com/Gith3ll/SetLang/pkg/gocc/cc/token"
+import "github.com/GitH3ll/SetLang/pkg/gocc/cc/token"
 
 // every element is an Attrib
 type Attrib interface{}
