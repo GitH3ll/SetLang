@@ -23,6 +23,9 @@ func (es ExpressionStatement) TokenLiteral() string { return "ExpressionStatemen
 func (is IfStatement) statementNode()       {}
 func (is IfStatement) TokenLiteral() string { return "IfStatement" }
 
+func (is IterStatement) statementNode()       {}
+func (is IterStatement) TokenLiteral() string { return "IterStatement" }
+
 func (bs BlockStatement) statementNode()       {}
 func (bs BlockStatement) TokenLiteral() string { return "BlockStatement" }
 
@@ -158,6 +161,10 @@ func NewIfStatement(cond, cons, alt Attrib) (Statement, error) {
 	}
 
 	return &IfStatement{Condition: c, Block: cs, Alternative: a}, nil
+}
+
+func NewIterStatement(s, v, block Attrib) (Statement, error) {
+	return IterStatement{}, nil
 }
 
 func NewInfixExpression(left, right, oper Attrib) (Expression, error) {

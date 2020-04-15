@@ -70,17 +70,17 @@ func gen(node ast.Node, b *bytes.Buffer) string {
 }
 
 func genProgram(node *ast.Program, b *bytes.Buffer) string {
-	write(b, "#include <string>\n#include <iostream>\n#include \"Builtins.cpp\"\n\n")
+	write(b, prog)
 
 	for _, funcs := range node.Functions {
 		gen(funcs, b)
 	}
 
-	write(b, "int main() {\n")
+	write(b, "func main() {\n")
 	for _, stmt := range node.Statements {
 		gen(stmt, b)
 	}
-	write(b, "return 0;\n}")
+	write(b, "\n}")
 	return ""
 }
 
@@ -100,20 +100,19 @@ func genExpressionStatement(node *ast.ExpressionStatement, b *bytes.Buffer) stri
 func genAssignStatement(node *ast.AssignStatement, b *bytes.Buffer) string {
 	right := gen(node.Right, b)
 	// get left type
-	write(b, "%s = %s;\n", node.Left.Value, right)
+	write(b, "%s = %s\n", node.Left.Value, right)
 	return ""
 }
 
 func genInitStatement(node *ast.InitStatement, b *bytes.Buffer) string {
 	right := gen(node.Expr, b)
-	kind, _ := GetIdentType(node.Location)
-	write(b, "%s %s = %s;\n", kind, node.Location, right)
+	write(b, "%s := %s\n", node.Location, right)
 	return ""
 }
 
 func genReturnStatement(node *ast.ReturnStatement, b *bytes.Buffer) string {
 	value := gen(node.ReturnValue, b)
-	write(b, "return %s;\n", value)
+	write(b, "return %s\n", value)
 	return ""
 }
 
@@ -138,7 +137,7 @@ func genFunctionStatement(node *ast.FunctionStatement, b *bytes.Buffer) string {
 
 func genIfStatement(node *ast.IfStatement, b *bytes.Buffer) string {
 	cond := gen(node.Condition, b)
-	write(b, "if (\"true\" == %s.val) {\n", cond)
+	write(b, "if (\"true\" == %s) {\n", cond)
 	gen(node.Block, b)
 	write(b, "} else {\n")
 	gen(node.Alternative, b)
@@ -148,7 +147,7 @@ func genIfStatement(node *ast.IfStatement, b *bytes.Buffer) string {
 
 func genInteger(node *ast.IntegerLiteral, b *bytes.Buffer) string {
 	tmp := freshTemp()
-	write(b, "Int %s = Int(%s);\n", tmp, string(node.Token.Lit))
+	write(b, "Int %s = Int(%s)\n", tmp, string(node.Token.Lit))
 	return tmp
 }
 
@@ -157,15 +156,15 @@ func genString(node *ast.StringLiteral, b *bytes.Buffer) string {
 	str := string(node.Token.Lit)
 	str = strings.Replace(str, `\`, "\\", -1)
 
-	write(b, "String %s = String(%s);\n", tmp, str)
+	write(b, "%s := string(%s)\n", tmp, str)
 	return tmp
 }
 
 func genBoolean(node *ast.Boolean, b *bytes.Buffer) string {
 	if node.Value {
-		return "Bool(\"true\")"
+		return "true"
 	} else {
-		return "Bool(\"false\")"
+		return "false"
 	}
 	return ""
 }
@@ -183,7 +182,7 @@ func genInfixExpression(node *ast.InfixExpression, b *bytes.Buffer) string {
 	methods := map[string]string{"+": PLUS, "-": MINUS, "==": EQUAL, "<": LT, ">": GT, "*": TIMES, "or": OR, "and": AND}
 
 	method, _ := GetMethod(kind, methods[node.Operator])
-	write(b, "%s %s = %s.%s(%s);\n", method.Return, tmp, left, methods[node.Operator], right)
+	write(b, "%s %s = %s.%s(%s)\n", method.Return, tmp, left, methods[node.Operator], right)
 	return tmp
 }
 
@@ -215,6 +214,6 @@ func genFunctionCall(node *ast.FunctionCall, b *bytes.Buffer) string {
 		}
 	}
 
-	write(b, ");")
+	write(b, ")")
 	return tmp
 }

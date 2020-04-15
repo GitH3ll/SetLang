@@ -152,9 +152,9 @@ var TokMap = TokenMap{
 		"error",
 		"true",
 		"false",
+		"comma",
 		"lquad",
 		"rquad",
-		"comma",
 	},
 
 	idMap: map[string]Type{
@@ -191,8 +191,8 @@ var TokMap = TokenMap{
 		"error":          30,
 		"true":           31,
 		"false":          32,
-		"lquad":          33,
-		"rquad":          34,
-		"comma":          35,
+		"comma":          33,
+		"lquad":          34,
+		"rquad":          35,
 	},
 }

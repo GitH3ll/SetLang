@@ -71,6 +71,13 @@ type IfStatement struct {
 	Alternative *BlockStatement `json:"alternative"`
 }
 
+type IterStatement struct {
+	Token *token.Token
+	Set   Identifier
+	Var   Identifier
+	Block *BlockStatement
+}
+
 type ExpressionStatement struct {
 	Token      *token.Token `json:"-"`
 	Expression Expression   `json:"statement"`

@@ -112,7 +112,7 @@ Term
   : Term mul Factor << ast.NewInfixExpression($0, $2, $1) >>
   | Term div Factor << ast.NewInfixExpression($0, $2, $1) >>
   | Bool			<< ast.NewBoolExpression($0) >>
-  | Set << ast.NewSetExpression($0) >>
+  /*| Set << ast.NewSetExpression($0) >>*/
   | string_literal << ast.NewStringLiteral($0) >>
   | Factor
   ;
@@ -129,9 +129,9 @@ Bool
   | false 						<< false, nil >>
   ;
 
-Set
+/*Set
   : lquad Args rquad << ast.NewSet($1) >>
-  ;
+  ;*/
 
 Args
   : Expression ArgsList << ast.AppendArgs($0, $1) >>
