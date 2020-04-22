@@ -93,7 +93,7 @@ func genBlockStatement(node *ast.BlockStatement, b *bytes.Buffer) string {
 
 func genExpressionStatement(node *ast.ExpressionStatement, b *bytes.Buffer) string {
 	value := gen(node.Expression, b)
-	write(b, "%s;\n", value)
+	write(b, "dump(%s)\n", value)
 	return ""
 }
 
@@ -156,7 +156,7 @@ func genString(node *ast.StringLiteral, b *bytes.Buffer) string {
 	str := string(node.Token.Lit)
 	str = strings.Replace(str, `\`, "\\", -1)
 
-	write(b, "%s := string(%s)\n", tmp, str)
+	write(b, "%s := NewValue(%s)\n", tmp, str)
 	return tmp
 }
 
@@ -176,18 +176,18 @@ func genIdentifier(node *ast.Identifier, b *bytes.Buffer) string {
 func genInfixExpression(node *ast.InfixExpression, b *bytes.Buffer) string {
 	left := gen(node.Left, b)
 	right := gen(node.Right, b)
-	kind := node.Type
+	//kind := node.Type
 
 	tmp := freshTemp()
 	methods := map[string]string{"+": PLUS, "-": MINUS, "==": EQUAL, "<": LT, ">": GT, "*": TIMES, "or": OR, "and": AND}
 
-	method, _ := GetMethod(kind, methods[node.Operator])
-	write(b, "%s %s = %s.%s(%s)\n", method.Return, tmp, left, methods[node.Operator], right)
+	//method, _ := GetMethod(kind, methods[node.Operator])
+	write(b, "%s := %s.%s(%s)\n", tmp, left, methods[node.Operator], right)
 	return tmp
 }
 
 func genFunctionCall(node *ast.FunctionCall, b *bytes.Buffer) string {
-	var sig Signature
+	//var sig Signature
 	args := make([]string, len(node.Args))
 	// store expression tmp vars
 	for i, arg := range node.Args {
@@ -197,15 +197,11 @@ func genFunctionCall(node *ast.FunctionCall, b *bytes.Buffer) string {
 
 	tmp := freshTemp()
 	if IsBuiltin(node.Name) {
-		sig, ok := GetMethod(node.Type, node.Name)
-		if !ok {
-			panic("no builtin function")
-		}
-
-		write(b, "%s %s = %s.%s(", sig.Return, tmp, args[0], node.Name)
+		//sig, ok := GetMethod(node.Type, node.Name)
+		write(b, "%s := %s.%s(", tmp, args[0], node.Name)
 	} else {
-		sig, _ = GetFunctionSignature(node.Name)
-		write(b, "%s %s = %s(", sig.Return, tmp, node.Name)
+		//sig, _ = GetFunctionSignature(node.Name)
+		write(b, "%s := %s(", tmp, node.Name)
 		for i, arg := range args {
 			write(b, arg)
 			if i != len(args)-1 {
@@ -214,6 +210,6 @@ func genFunctionCall(node *ast.FunctionCall, b *bytes.Buffer) string {
 		}
 	}
 
-	write(b, ")")
+	write(b, ")\n")
 	return tmp
 }

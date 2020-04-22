@@ -5,10 +5,9 @@ import (
 	"io/ioutil"
 	"log"
 
+	"github.com/GitH3ll/SetLang/pkg/ast"
 	"github.com/GitH3ll/SetLang/pkg/checker"
 	"github.com/GitH3ll/SetLang/pkg/gen"
-
-	"github.com/GitH3ll/SetLang/pkg/ast"
 	"github.com/GitH3ll/SetLang/pkg/gocc/cc/lexer"
 	"github.com/GitH3ll/SetLang/pkg/gocc/cc/parser"
 )
@@ -22,7 +21,12 @@ func main() {
 	prog := Parse(string(buf))
 	TypeCheck(prog)
 	code := gen.GenWrapper(prog)
-	fmt.Print(code.String())
+	output := code.String()
+	fmt.Print(output)
+	err = ioutil.WriteFile("output.go", []byte(output), 0777)
+	if err != nil {
+		log.Println(err)
+	}
 }
 
 func Parse(input string) *ast.Program {

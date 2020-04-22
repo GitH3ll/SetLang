@@ -27,14 +27,9 @@ ident : _letter     {_alpha} ;
 plus : '+' ;
 minus : '-' ;
 mul : '*' ;
-div : '/' ;
 
 eq : '=' '=' ;
 neq : '!' '=' ;
-lte : '<' '=' ;
-lt : '<' ;
-gte : '>' '=' ;
-gt : '>' ;
 
 lfigure : '{' ;
 rfigure : '}' ;
