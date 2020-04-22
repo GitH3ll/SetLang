@@ -42,6 +42,9 @@ func (i Identifier) TokenLiteral() string { return string(i.Token.Lit) }
 func (sl StringLiteral) expressionNode()      {}
 func (sl StringLiteral) TokenLiteral() string { return string(sl.Token.Lit) }
 
+func (sl SetExpression) expressionNode()      {}
+func (sl SetExpression) TokenLiteral() string { return string(sl.Token.Lit) }
+
 func (b Boolean) expressionNode()      {}
 func (b Boolean) TokenLiteral() string { return string(b.Token.Lit) }
 
@@ -53,6 +56,9 @@ func (oe InfixExpression) TokenLiteral() string { return string(oe.Token.Lit) }
 
 func (fc FunctionCall) expressionNode()      {}
 func (fc FunctionCall) TokenLiteral() string { return string(fc.Token.Lit) }
+
+func (fc Set) expressionNode()      {}
+func (fc Set) TokenLiteral() string { return string(fc.Token.Lit) }
 
 func Error(fun, expected, v string, got interface{}) error {
 	return fmt.Errorf("AST construction error: In function: %s, expected %s for %s. got=%T", fun, expected, v, got)
@@ -200,6 +206,16 @@ func NewStringLiteral(str Attrib) (Expression, error) {
 	return &StringLiteral{Value: string(str.(*token.Token).Lit), Token: str.(*token.Token)}, nil
 }
 
+func NewSetExpression(set Attrib) (Expression, error) {
+	s, ok := set.(*Set)
+	if !ok {
+		return nil, Error("NewSetExpression", "*Set", "kek", set)
+	}
+	return SetExpression{
+		Value: s,
+	}, nil
+}
+
 func NewIdentInit(ident, expr Attrib) (Statement, error) {
 	e, ok := expr.(Expression)
 	if !ok {
@@ -241,6 +257,19 @@ func NewFunctionCall(name, args Attrib) (Expression, error) {
 	}
 
 	return &FunctionCall{Name: string(n.Lit), Args: a, Token: n}, nil
+}
+
+func NewSet(args Attrib) (Expression, error) {
+	a := []Expression{}
+	if args != nil {
+		var ok bool
+		a, ok = args.([]Expression)
+		if !ok {
+			return nil, Error("NewSet", "[]Expression", "args", args)
+		}
+	}
+
+	return &Set{Args: a}, nil
 }
 
 func NewFormalArg() ([]FormalArg, error) {

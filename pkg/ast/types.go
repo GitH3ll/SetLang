@@ -110,6 +110,11 @@ type StringLiteral struct {
 	Value string       `json:"value"`
 }
 
+type SetExpression struct {
+	Token *token.Token
+	Value *Set
+}
+
 type InfixExpression struct {
 	Token    *token.Token `json:"-"`
 	Type     string       `json:"-"`
@@ -123,4 +128,9 @@ type FunctionCall struct {
 	Name  string       `json:"name"`
 	Args  []Expression `json:"args"`
 	Type  string       `json:"type"`
+}
+
+type Set struct {
+	Token *token.Token
+	Args  []Expression
 }

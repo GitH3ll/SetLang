@@ -59,6 +59,8 @@ func gen(node ast.Node, b *bytes.Buffer) string {
 		return genInteger(node, b)
 	case *ast.StringLiteral:
 		return genString(node, b)
+	case ast.SetExpression:
+		return genSet(&node, b)
 	case *ast.Boolean:
 		return genBoolean(node, b)
 	case *ast.Identifier:
@@ -157,6 +159,20 @@ func genString(node *ast.StringLiteral, b *bytes.Buffer) string {
 	str = strings.Replace(str, `\`, "\\", -1)
 
 	write(b, "%s := NewValue(%s)\n", tmp, str)
+	return tmp
+}
+
+func genSet(node *ast.SetExpression, b *bytes.Buffer) string {
+	tmp := freshTemp()
+	vals := node.Value.Args
+	tmps := make([]string, 0, len(vals))
+
+	for _, val := range vals {
+		tmps = append(tmps, gen(val, b))
+	}
+	elems := strings.Join(tmps, ", ")
+
+	write(b, "%s := NewSet(%s)\n", tmp, elems)
 	return tmp
 }
 
