@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"io/ioutil"
 	"log"
 
@@ -22,7 +21,6 @@ func main() {
 	TypeCheck(prog)
 	code := gen.GenWrapper(prog)
 	output := code.String()
-	fmt.Print(output)
 	err = ioutil.WriteFile("output.go", []byte(output), 0777)
 	if err != nil {
 		log.Println(err)
