@@ -37,6 +37,10 @@ var TypeTable = map[string]Methods{
 			Return: SET_TYPE,
 			Params: []string{VAL_TYPE, SET_TYPE},
 		},
+		PRINT: {
+			Return: SET_TYPE,
+			Params: []string{},
+		},
 	},
 	VAL_TYPE: {
 		PLUS: {

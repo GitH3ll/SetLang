@@ -40,6 +40,8 @@ func checker(node ast.Node) (string, error) {
 		return evalInteger(node)
 	case *ast.StringLiteral:
 		return evalString(node)
+	case ast.SetExpression:
+		return evalSet(&node)
 	case *ast.Boolean:
 		return evalBoolean(node)
 	case *ast.Identifier:
@@ -207,7 +209,11 @@ func evalInteger(node *ast.IntegerLiteral) (string, error) {
 }
 
 func evalString(node *ast.StringLiteral) (string, error) {
-	return STRING_TYPE, nil
+	return VAL_TYPE, nil
+}
+
+func evalSet(node *ast.SetExpression) (string, error) {
+	return SET_TYPE, nil
 }
 
 func evalInfixExpression(node *ast.InfixExpression) (string, error) {

@@ -33,23 +33,23 @@ func (v Value) get() string {
 	return v.val
 }
 
-func (v Value) PRINT() string {
+func (v Value) PRINT() Value {
 	fmt.Println(v.val)
-	return v.val
+	return v
 }
 
-func (s Set) PRINT() string {
+func (s Set) PRINT() Set {
 	fmt.Print("{")
 	for _, v := range s.elems {
 		fmt.Print(v.val + ", ")
 	}
 	fmt.Println("}")
-	return ""
+	return s
 }
 
 func (s Set) PLUS(val Value) Set {
 	s.elems[val.get()] = val
-	return ""
+	return s
 }
 
 func dump(a interface{}) {
@@ -83,18 +83,18 @@ func (v Value) get() string {
 	return v.val
 }
 
-func (v Value) PRINT() string {
+func (v Value) PRINT() Value {
 	fmt.Println(v.val)
-	return v.val
+	return v
 }
 
-func (s Set) PRINT() string {
+func (s Set) PRINT() Set {
 	fmt.Print("{")
 	for _, v := range s.elems {
 		fmt.Print(v.val + ", ")
 	}
 	fmt.Println("}")
-	return ""
+	return s
 }
 
 func (s Set) PLUS(val Value) Set {
