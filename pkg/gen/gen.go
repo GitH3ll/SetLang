@@ -123,15 +123,15 @@ func genFunctionStatement(node *ast.FunctionStatement, b *bytes.Buffer) string {
 		panic("built in function")
 	}
 
-	write(b, "%s %s(", node.Return, node.Name)
+	write(b, "%s %s(", "func", node.Name)
 
 	for i, arg := range node.Parameters {
-		write(b, "%s %s", arg.Type, arg.Arg)
+		write(b, "%s %s", arg.Arg, arg.Type)
 		if i != len(node.Parameters)-1 {
 			write(b, ",")
 		}
 	}
-	write(b, ") {\n")
+	write(b, ") "+node.Return+" {\n")
 	gen(node.Body, b)
 	write(b, "}\n\n")
 	return ""

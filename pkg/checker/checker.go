@@ -221,9 +221,9 @@ func evalInfixExpression(node *ast.InfixExpression) (string, error) {
 		return right, err
 	}
 
-	if left != right {
+	/*if left != right {
 		return "", errors.New("incorrect types for operation")
-	}
+	}*/
 
 	node.Type = left // set type for code generation
 

@@ -19,6 +19,8 @@ const (
 	STRING_TYPE  = "String"
 	BOOL_TYPE    = "Bool"
 	NOTHING_TYPE = "Nothing"
+	SET_TYPE     = "Set"
+	VAL_TYPE     = "Val"
 )
 
 type Signature struct {
@@ -30,14 +32,22 @@ type Methods map[string]Signature
 
 // type methods
 var TypeTable = map[string]Methods{
-	INT_TYPE: {
-		PLUS:  {INT_TYPE, []string{INT_TYPE}},
-		MINUS: {INT_TYPE, []string{INT_TYPE}},
-		TIMES: {INT_TYPE, []string{INT_TYPE}},
-		LT:    {BOOL_TYPE, []string{INT_TYPE}},
-		GT:    {BOOL_TYPE, []string{INT_TYPE}},
-		EQUAL: {BOOL_TYPE, []string{INT_TYPE}},
-		PRINT: {NOTHING_TYPE, []string{}}},
+	SET_TYPE: {
+		PLUS: {
+			Return: SET_TYPE,
+			Params: []string{VAL_TYPE, SET_TYPE},
+		},
+	},
+	VAL_TYPE: {
+		PLUS: {
+			Return: SET_TYPE,
+			Params: []string{SET_TYPE, VAL_TYPE},
+		},
+		PRINT: {
+			Return: NOTHING_TYPE,
+			Params: []string{},
+		},
+	},
 	STRING_TYPE: {
 		PLUS:  {STRING_TYPE, []string{STRING_TYPE}},
 		PRINT: {NOTHING_TYPE, []string{}}},

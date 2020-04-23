@@ -41,19 +41,19 @@ func (v Value) PRINT() string {
 func (s Set) PRINT() string {
 	fmt.Print("{")
 	for _, v := range s.elems {
-		fmt.Printf("%s, ", v.val)
+		fmt.Print(v.val + ", ")
 	}
 	fmt.Println("}")
 	return ""
 }
 
-func (s Set) ADDELEM(val Value) string {
+func (s Set) PLUS(val Value) Set {
 	s.elems[val.get()] = val
 	return ""
 }
 
-func dump(a interface{})  {
-	
+func dump(a interface{}) {
+
 }
 
 `
@@ -91,15 +91,15 @@ func (v Value) PRINT() string {
 func (s Set) PRINT() string {
 	fmt.Print("{")
 	for _, v := range s.elems {
-		fmt.Printf("%s, ", v.val)
+		fmt.Print(v.val + ", ")
 	}
 	fmt.Println("}")
 	return ""
 }
 
-func (s Set) ADDELEM(val Value) string {
+func (s Set) PLUS(val Value) Set {
 	s.elems[val.get()] = val
-	return ""
+	return s
 }
 
 func dump(a interface{}) {
