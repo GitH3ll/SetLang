@@ -46,6 +46,8 @@ func gen(node ast.Node, b *bytes.Buffer) string {
 		return genFunctionStatement(node, b)
 	case *ast.IfStatement:
 		return genIfStatement(node, b)
+	case *ast.IterStatement:
+		return genIterStatement(node, b)
 	case *ast.ExpressionStatement:
 		return genExpressionStatement(node, b)
 	case *ast.AssignStatement:
@@ -143,6 +145,13 @@ func genIfStatement(node *ast.IfStatement, b *bytes.Buffer) string {
 	gen(node.Block, b)
 	write(b, "} else {\n")
 	gen(node.Alternative, b)
+	write(b, "}\n\n")
+	return ""
+}
+
+func genIterStatement(node *ast.IterStatement, b *bytes.Buffer) string {
+	write(b, "for _, "+node.Var+" := range "+node.Set+".elems {\n")
+	gen(node.Block, b)
 	write(b, "}\n\n")
 	return ""
 }

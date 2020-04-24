@@ -170,7 +170,22 @@ func NewIfStatement(cond, cons, alt Attrib) (Statement, error) {
 }
 
 func NewIterStatement(s, v, block Attrib) (Statement, error) {
-	return IterStatement{}, nil
+	c, ok := s.(*token.Token)
+	if !ok {
+		return nil, fmt.Errorf("invalid type of s. got=%T", s)
+	}
+
+	cs, ok := v.(*token.Token)
+	if !ok {
+		return nil, fmt.Errorf("invalid type of cons. got=%T", v)
+	}
+
+	a, ok := block.(*BlockStatement)
+	if !ok {
+		return nil, fmt.Errorf("invalid type of alt. got=%T", block)
+	}
+
+	return &IterStatement{Set: string(c.Lit), Var: string(cs.Lit), Block: a}, nil
 }
 
 func NewInfixExpression(left, right, oper Attrib) (Expression, error) {

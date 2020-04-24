@@ -65,7 +65,7 @@ Function
  Statements
   : Statements Statement << ast.AppendStatement($0, $1) >>
   | empty << ast.NewStatementList() >>
-  ;node.Return
+  ;
 
  StatementBlock
   : lfigure Statements rfigure << ast.NewBlockStatement($1) >>

@@ -73,8 +73,8 @@ type IfStatement struct {
 
 type IterStatement struct {
 	Token *token.Token
-	Set   Identifier
-	Var   Identifier
+	Set   string
+	Var   string
 	Block *BlockStatement
 }
 
