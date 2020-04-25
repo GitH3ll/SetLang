@@ -141,7 +141,7 @@ func genFunctionStatement(node *ast.FunctionStatement, b *bytes.Buffer) string {
 
 func genIfStatement(node *ast.IfStatement, b *bytes.Buffer) string {
 	cond := gen(node.Condition, b)
-	write(b, "if (\"true\" == %s) {\n", cond)
+	write(b, "if (true == %s) {\n", cond)
 	gen(node.Block, b)
 	write(b, "} else {\n")
 	gen(node.Alternative, b)

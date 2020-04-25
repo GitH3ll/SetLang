@@ -17,6 +17,14 @@ type Value struct {
 	val string
 }
 
+type Bool struct {
+	val string
+}
+
+func NewBool(v string) Bool {
+	return Bool{val: v}
+}
+
 func NewValue(v string) Value {
 	return Value{val: v}
 }
@@ -65,6 +73,14 @@ type Set struct {
 
 type Value struct {
 	val string
+}
+
+type Bool struct {
+	val string
+}
+
+func NewBool(v string) Bool {
+	return Bool{val: v}
 }
 
 func NewValue(v string) Value {
