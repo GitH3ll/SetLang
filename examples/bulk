@@ -1,0 +1,17 @@
+func omg(l Set, m Value) Set {
+	return l + m;
+}
+
+ent x = "dagestan dagestan";
+ent y = ["kekistan", "dagestan"];
+PRINT(x);
+PRINT(y);
+PRINT(y+x);
+iter y by x {
+    PRINT(x);
+}
+if (true) {
+PRINT(x);
+} else {
+PRINT(y);
+}

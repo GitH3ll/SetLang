@@ -1,0 +1,9 @@
+ent a = "first";
+ent b = ["some", "set"];
+PRINT(b);
+iter b by a {
+    PRINT(a);
+    ent b = "out of scope";
+    PRINT(b);
+}
+PRINT(b);

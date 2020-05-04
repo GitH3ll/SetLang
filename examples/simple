@@ -1,0 +1,3 @@
+ent a = "dagestan";
+ent b = ["dagestan dagestan"];
+PRINT(b+a);

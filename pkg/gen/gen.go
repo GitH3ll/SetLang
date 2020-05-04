@@ -110,7 +110,7 @@ func genAssignStatement(node *ast.AssignStatement, b *bytes.Buffer) string {
 
 func genInitStatement(node *ast.InitStatement, b *bytes.Buffer) string {
 	right := gen(node.Expr, b)
-	write(b, "%s := %s\n", node.Location, right)
+	write(b, "%s := %s\ndump(%s)\n", node.Location, right, node.Location)
 	return ""
 }
 
